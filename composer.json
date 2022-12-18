@@ -13,5 +13,12 @@
         "classmap": [
             "src/database/migrations"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\SequenceNumberGeneratorServiceProvider"
+            ]
+        }
     }
 }
