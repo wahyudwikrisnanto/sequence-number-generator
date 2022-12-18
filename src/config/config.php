@@ -33,5 +33,15 @@ return [
 
     'prefix_sequence_separator' => '-',
 
-    'type'   => 'default'
+    /**
+     * Type is the category of the generated sequence number
+     */
+
+    'type'   => 'default',
+
+    /**
+     * Skip is the number that will be skipped when generating sequence number
+     */
+
+    'skip' => 0,
 ];

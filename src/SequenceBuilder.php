@@ -6,7 +6,7 @@ use Exception;
 
 class SequenceBuilder
 {
-    private SequenceService $sequenceNumber;
+    private SequenceService $sequenceService;
 
     public function __construct()
     {
@@ -15,34 +15,37 @@ class SequenceBuilder
 
     public function reset(): void
     {
-        $this->sequenceNumber = new SequenceService();
+        $this->sequenceService = new SequenceService();
     }
 
     public function prefix(string $prefix): void
     {
-        $this->sequenceNumber->prefix = $prefix;
+        $this->sequenceService->prefix = $prefix;
     }
 
     public function start(int $start): void
     {
-        $this->sequenceNumber->start = $start;
+        $this->sequenceService->start = $start;
     }
 
     public function digits(int $digits): void
     {
-        $this->sequenceNumber->digits = $digits;
+        $this->sequenceService->digits = $digits;
     }
 
     public function type(string $type): void
     {
-        $this->sequenceNumber->type = $type;
+        $this->sequenceService->type = $type;
     }
 
-    public function ignoreUpdate(): object
+    public function skip(int $skip): void
     {
-        $this->sequenceNumber->ignoreUpdate = true;
+        $this->sequenceService->skip = $skip;
+    }
 
-        return $this;
+    public function ignoreUpdate(): void
+    {
+        $this->sequenceService->ignoreUpdate = true;
     }
 
     /**
@@ -50,15 +53,38 @@ class SequenceBuilder
      */
     public function generate($isReturnInstance = false): SequenceService|string
     {
-        $result = $this->sequenceNumber;
+        $service = $this->sequenceService;
 
         $this->reset();
 
-        return $result->result($isReturnInstance);
+        return $service->result($isReturnInstance);
+    }
+
+    public function getLastSequence(): string
+    {
+        $service = $this->sequenceService;
+
+        $this->reset();
+
+        return $service->getLastSequence();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getNextSequence(): SequenceService|string
+    {
+        $service = $this->sequenceService;
+
+        $this->ignoreUpdate();
+
+        $this->reset();
+
+        return $service->result(false);
     }
 
     public function prefixSequenceSeparator(string $separator): void
     {
-        $this->sequenceNumber->prefixSequenceSeparator = $separator;
+        $this->sequenceService->prefixSequenceSeparator = $separator;
     }
 }

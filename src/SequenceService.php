@@ -13,6 +13,7 @@ class SequenceService
     public string $prefixSequenceSeparator;
     public string $type;
     public bool $ignoreUpdate = false;
+    public int $skip;
 
     private string $result;
     private $lastSequenceNumber;
@@ -30,11 +31,13 @@ class SequenceService
         DB::beginTransaction();
 
         try {
+            $this->setSkip();
             $this->setStart();
             $this->setType();
             $this->setPrefix();
             $this->setSeparator();
-            $this->setSequence();
+            $this->setDigits();
+            $this->generateSequence();
 
             DB::commit();
 
@@ -57,17 +60,18 @@ class SequenceService
     /**
      * @throws \Exception
      */
-    public function setSequence(): void
+    public function generateSequence($ignoreGetNextSequence = false): void
     {
         $this->lastSequenceNumber = LastSequenceNumber::query()
             ->where('type', $this->type)
             ->lockForUpdate()
             ->first();
 
-        $this->digits = $this->getDigits();
-        $this->start  = $this->getLastSequence();
-        $sequence     = sprintf("%'.0{$this->digits}d", $this->start);
+        if (! $ignoreGetNextSequence) {
+            $this->start = $this->getNextSequence();
+        }
 
+        $sequence      = sprintf("%'.0{$this->digits}d", $this->start);
         $this->result .= $sequence;
     }
 
@@ -90,11 +94,29 @@ class SequenceService
         }
     }
 
+    private function setSkip(): void
+    {
+        if (empty($this->skip)) {
+            $this->skip = intval(config('invoicenumbergenerator.skip'));
+        }
+
+        if ($this->skip < 1) {
+            $this->skip = 1;
+        } else {
+            $this->skip++;
+        }
+    }
+
     private function setStart(): void
     {
         if (empty($this->start)) {
             $this->start = config('invoicenumbergenerator.start');
         }
+    }
+
+    private function setDigits(): void
+    {
+        $this->digits = $this->getDigits();
     }
 
     public function getPrefix(): string
@@ -107,13 +129,35 @@ class SequenceService
         return $this->digits;
     }
 
-    protected function getLastSequence(): int
+    public function getLastSequence()
+    {
+        $this->setStart();
+        $this->setType();
+        $this->setPrefix();
+        $this->setSeparator();
+        $this->setDigits();
+
+        $this->lastSequenceNumber = LastSequenceNumber::query()
+            ->where('type', $this->type)
+            ->lockForUpdate()
+            ->first();
+
+        if ($this->lastSequenceNumber) {
+            $this->start = $this->lastSequenceNumber->last_sequence;
+        }
+
+        $this->result .= sprintf("%'.0{$this->digits}d", $this->start);
+
+        return $this->result;
+    }
+
+    protected function getNextSequence(): int
     {
         if ($this->lastSequenceNumber?->last_sequence) {
             if ($this->ignoreUpdate) {
-                $this->lastSequenceNumber->last_sequence++;
+                $this->lastSequenceNumber->last_sequence += $this->skip;
             } else {
-                $this->lastSequenceNumber->increment('last_sequence');
+                $this->lastSequenceNumber->increment('last_sequence', $this->skip);
             }
 
             return $this->lastSequenceNumber->last_sequence;
@@ -125,6 +169,11 @@ class SequenceService
         ]);
 
         return $this->start;
+    }
+
+    private function calculateSkip()
+    {
+
     }
 
     protected function getDigits()
