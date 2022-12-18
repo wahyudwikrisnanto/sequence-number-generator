@@ -19,6 +19,9 @@
             "providers": [
                 "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\SequenceNumberGeneratorServiceProvider"
             ]
+        },
+        "aliases": {
+            "SequenceGenerator": "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\Facades\\SequenceGenerator"
         }
     }
 }
