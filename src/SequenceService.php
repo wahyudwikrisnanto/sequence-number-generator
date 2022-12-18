@@ -5,6 +5,7 @@ namespace WahyuDwiKrisnanto\InvoiceNumberGenerator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use WahyuDwiKrisnanto\InvoiceNumberGenerator\Models\LastSequenceNumber;
+use function Symfony\Component\Translation\t;
 
 class SequenceService
 {
@@ -31,6 +32,7 @@ class SequenceService
         DB::beginTransaction();
 
         try {
+            $this->setStart();
             $this->setType();
             $this->setPrefix();
             $this->setSeparator();
@@ -105,6 +107,13 @@ class SequenceService
         }
     }
 
+    private function setStart()
+    {
+        if (isset($this->start)) {
+            $this->start = config('invoicenumbergenerator.start');
+        }
+    }
+
     protected function getLastSequence(): mixed
     {
         if ($this->lastSequenceNumber?->last_sequence) {
@@ -122,7 +131,7 @@ class SequenceService
             'last_sequence' => $this->start
         ]);
 
-        return $this->start ?? config('invoicenumbergenerator.start');
+        return $this->start;
     }
 
     protected function getDigits()
