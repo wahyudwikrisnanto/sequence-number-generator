@@ -8,6 +8,6 @@ class SequenceGenerator extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'sequenceGenerator';
+        return 'SequenceGenerator';
     }
 }

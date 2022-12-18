@@ -8,7 +8,7 @@ class SequenceNumberGeneratorServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind('sequenceBuilder', function($app) {
+        $this->app->bind('SequenceGenerator', function($app) {
             return new SequenceBuilder();
         });
 
