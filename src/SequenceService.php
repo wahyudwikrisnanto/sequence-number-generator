@@ -109,7 +109,7 @@ class SequenceService
 
     private function setStart()
     {
-        if (isset($this->start)) {
+        if (empty($this->start)) {
             $this->start = config('invoicenumbergenerator.start');
         }
     }
