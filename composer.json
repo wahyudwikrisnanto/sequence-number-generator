@@ -1,0 +1,17 @@
+{
+    "name": "wahyudwikrisnanto/sequence-number-generator",
+    "authors": [
+        {
+            "name": "Wahyu Dwi Krisnanto",
+            "email": "wahyudwikrisnanto@timedoor.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\": "src/"
+        },
+        "classmap": [
+            "database/migrations"
+        ]
+    }
+}
