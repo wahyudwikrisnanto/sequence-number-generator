@@ -14,7 +14,7 @@ class SequenceNumberGeneratorServiceProvider extends ServiceProvider
             return new SequenceBuilder();
         });
 
-        $this->mergeConfigFrom(__DIR__ . '../../config/config.php', 'invoicenumbergenerator');
+        $this->mergeConfigFrom(__DIR__ . '/config/config.php', 'invoicenumbergenerator');
     }
 
     /**
