@@ -16,7 +16,7 @@ class SequenceService
     public bool $once = false;
 
     private string $result;
-    private Model $lastSequenceNumber;
+    private $lastSequenceNumber;
 
     public function __construct()
     {
