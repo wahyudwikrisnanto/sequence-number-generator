@@ -6,9 +6,10 @@
             "email": "wahyudwikrisnanto@timedoor.net"
         }
     ],
+    "license": "MIT",
     "autoload": {
         "psr-4": {
-            "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\": "src/"
+            "WahyuDwiKrisnanto\\SequenceNumberGenerator\\": "src/"
         },
         "classmap": [
             "src/database/migrations"
@@ -17,11 +18,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\SequenceNumberGeneratorServiceProvider"
+                "WahyuDwiKrisnanto\\SequenceNumberGenerator\\SequenceNumberGeneratorServiceProvider"
             ]
         },
         "aliases": {
-            "SequenceGenerator": "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\Facades\\SequenceGenerator"
+            "SequenceGenerator": "WahyuDwiKrisnanto\\SequenceNumberGenerator\\Facades\\SequenceGenerator"
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace WahyuDwiKrisnanto\InvoiceNumberGenerator\Facades;
+namespace WahyuDwiKrisnanto\SequenceNumberGenerator\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

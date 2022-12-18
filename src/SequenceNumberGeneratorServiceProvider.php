@@ -1,6 +1,6 @@
 <?php
 
-namespace WahyuDwiKrisnanto\InvoiceNumberGenerator;
+namespace WahyuDwiKrisnanto\SequenceNumberGenerator;
 
 use Illuminate\Support\ServiceProvider;
 

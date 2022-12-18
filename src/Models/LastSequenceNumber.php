@@ -1,6 +1,6 @@
 <?php
 
-namespace WahyuDwiKrisnanto\InvoiceNumberGenerator\Models;
+namespace WahyuDwiKrisnanto\SequenceNumberGenerator\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

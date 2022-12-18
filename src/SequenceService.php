@@ -1,11 +1,9 @@
 <?php
 
-namespace WahyuDwiKrisnanto\InvoiceNumberGenerator;
+namespace WahyuDwiKrisnanto\SequenceNumberGenerator;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use WahyuDwiKrisnanto\InvoiceNumberGenerator\Models\LastSequenceNumber;
-use function Symfony\Component\Translation\t;
+use WahyuDwiKrisnanto\SequenceNumberGenerator\Models\LastSequenceNumber;
 
 class SequenceService
 {
@@ -14,7 +12,7 @@ class SequenceService
     public int $digits;
     public string $prefixSequenceSeparator;
     public string $type;
-    public bool $once = false;
+    public bool $ignoreUpdate = false;
 
     private string $result;
     private $lastSequenceNumber;
@@ -85,14 +83,23 @@ class SequenceService
             ?? config('invoicenumbergenerator.prefix_sequence_separator');
     }
 
+    private function setType(): void
+    {
+        if (empty($this->type)) {
+            $this->type = config('invoicenumbergenerator.type');
+        }
+    }
+
+    private function setStart(): void
+    {
+        if (empty($this->start)) {
+            $this->start = config('invoicenumbergenerator.start');
+        }
+    }
+
     public function getPrefix(): string
     {
         return $this->prefix;
-    }
-
-    public function getSequence(): int
-    {
-        return $this->start;
     }
 
     public function getType()
@@ -100,24 +107,10 @@ class SequenceService
         return $this->digits;
     }
 
-    private function setType()
-    {
-        if (empty($this->type)) {
-            $this->type = config('invoicenumbergenerator.type');
-        }
-    }
-
-    private function setStart()
-    {
-        if (empty($this->start)) {
-            $this->start = config('invoicenumbergenerator.start');
-        }
-    }
-
-    protected function getLastSequence(): mixed
+    protected function getLastSequence(): int
     {
         if ($this->lastSequenceNumber?->last_sequence) {
-            if ($this->once) {
+            if ($this->ignoreUpdate) {
                 $this->lastSequenceNumber->last_sequence++;
             } else {
                 $this->lastSequenceNumber->increment('last_sequence');

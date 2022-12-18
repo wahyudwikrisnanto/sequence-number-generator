@@ -1,6 +1,6 @@
 <?php
 
-namespace WahyuDwiKrisnanto\InvoiceNumberGenerator;
+namespace WahyuDwiKrisnanto\SequenceNumberGenerator;
 
 use Exception;
 
@@ -38,9 +38,9 @@ class SequenceBuilder
         $this->sequenceNumber->type = $type;
     }
 
-    public function once(): object
+    public function ignoreUpdate(): object
     {
-        $this->sequenceNumber->once = true;
+        $this->sequenceNumber->ignoreUpdate = true;
 
         return $this;
     }
