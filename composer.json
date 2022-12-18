@@ -11,7 +11,7 @@
             "WahyuDwiKrisnanto\\InvoiceNumberGenerator\\": "src/"
         },
         "classmap": [
-            "database/migrations"
+            "src/database/migrations"
         ]
     }
 }

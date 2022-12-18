@@ -1,10 +1,8 @@
 <?php
 
-namespace WahyuDwiKrisnanto\InvoiceNumberGenerator\Providers;
+namespace WahyuDwiKrisnanto\InvoiceNumberGenerator;
 
 use Illuminate\Support\ServiceProvider;
-use WahyuDwiKrisnanto\InvoiceNumberGenerator\SequenceBuilder;
-use function WahyuDwiKrisnanto\InvoiceNumberGenerator\config_path;
 
 class SequenceNumberGeneratorServiceProvider extends ServiceProvider
 {
